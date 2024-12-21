@@ -11,6 +11,15 @@ int main()
     // Vector2 playerPosition = {0, 0};
     Vector2 mapPosition = {0, 0};
 
+    Texture2D knight = LoadTexture("characters/knight_idle_spritesheet.png");
+    Vector2 knightPosition = {
+        // Center the knight in the screen, and scale it by 4
+        (float)screenDimensions[0]/2.0f - 4.0f * (0.5f * (float)knight.width/6.0f), 
+        (float)screenDimensions[1]/2.0f - 4.0f * (0.5f * (float)knight.height)
+    };
+
+
+
     float playerSpeed = 4.0f;
 
     SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
@@ -35,10 +44,17 @@ int main()
             mapPosition = Vector2Subtract(mapPosition, Vector2Scale(Vector2Normalize(direction), playerSpeed));
         }
 
+        // Draw the map
         DrawTextureEx(map, mapPosition, 0, 4, WHITE);
 
+        // Draw the knight
+        Rectangle sourceRec = {0.0f, 0.0f, (float)knight.width/6.0f, (float)knight.height};
+        // The x and y are the location we want to draw the knight in the window
+        Rectangle destRec = {knightPosition.x, knightPosition.y, 4.0f * (float)knight.width/6.0f, 4.0f * (float)knight.height};
 
+        DrawTexturePro(knight, sourceRec, destRec, Vector2{}, 0.0f, WHITE);
 
+        
         EndDrawing();
     }
     UnloadTexture(map);
